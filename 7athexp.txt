@@ -1,0 +1,83 @@
+#include <stdio.h>
+
+int main()
+{
+    int i, j;
+    int f[10], fp[10];
+    int no, p[15], part[15], pno, pr[15], prmem[15];
+
+    printf("\n*************");
+    printf("\nImplementation of First-Fit Algorithm");
+    printf("\n******************\n");
+
+    printf("\nEnter the number of partitions: ");
+    scanf("%d", &no);
+
+    // Input partitions
+    for (i = 1; i <= no; i++)
+    {
+        p[i] = i;
+        printf("Enter memory size for partition %d: ", i);
+        scanf("%d", &part[i]);
+    }
+
+    printf("\nEnter the number of processes: ");
+    scanf("%d", &pno);
+
+    // Input processes
+    for (i = 1; i <= pno; i++)
+    {
+        pr[i] = i;
+        printf("Enter size for process %d: ", i);
+        scanf("%d", &prmem[i]);
+    }
+
+    printf("\nProcess\tPartition\tFree Memory\n");
+    printf("----------------------------------------\n");
+
+    // Initialize flags
+    for (i = 1; i <= no; i++)
+        f[i] = 0;
+
+    for (i = 1; i <= pno; i++)
+        fp[i] = 0;
+
+    // First Fit Allocation
+    for (j = 1; j <= pno; j++)
+    {
+        for (i = 1; i <= no; i++)
+        {
+            if ((part[i] >= prmem[j]) && (f[i] == 0))
+            {
+                part[i] -= prmem[j];
+                fp[j] = 1;
+                f[i] = 1;
+
+                printf("%d\t%d\t\t%d\n", pr[j], p[i], part[i]);
+                break; // instead of goto
+            }
+        }
+    }
+
+    // Unused partitions
+    printf("\nUnused Partitions:\n");
+    for (i = 1; i <= no; i++)
+    {
+        if (f[i] == 0)
+        {
+            printf("Partition %d: %d\n", p[i], part[i]);
+        }
+    }
+
+    // Unallocated processes
+    printf("\nUnallocated Processes: ");
+    for (i = 1; i <= pno; i++)
+    {
+        if (fp[i] == 0)
+        {
+            printf("%d ", pr[i]);
+        }
+    }
+
+    return 0;
+}
